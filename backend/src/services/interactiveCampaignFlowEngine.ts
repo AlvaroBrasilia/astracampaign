@@ -4,10 +4,10 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import { interactiveCampaignSessionService } from './interactiveCampaignSessionService';
-import { sendMessage } from './wahaApiService';
 import { sendMessageViaEvolution } from './evolutionMessageService';
+import { interactiveCampaignSessionService } from './interactiveCampaignSessionService';
 import { sendMessageViaQuepasa } from './quepasaMessageService';
+import { sendMessage } from './wahaApiService';
 
 const prisma = new PrismaClient();
 
@@ -135,7 +135,7 @@ export const interactiveCampaignFlowEngine = {
     }
 
     // Modo if/else tradicional
-    const { field, operator, value } = config;
+    const { field, conditionType, value } = config;
 
     // Normalizar resposta do usuário
     const normalizedResponse = userResponse.toLowerCase().trim();
@@ -144,7 +144,7 @@ export const interactiveCampaignFlowEngine = {
     let conditionMet = false;
 
     // Avaliar condição baseado no operador
-    switch (operator) {
+    switch (conditionType) {
       case 'equals':
       case '==':
         conditionMet = normalizedResponse === normalizedValue;
@@ -178,11 +178,11 @@ export const interactiveCampaignFlowEngine = {
         break;
 
       default:
-        console.warn(`⚠️ Unknown operator: ${operator}, defaulting to equals`);
-        conditionMet = normalizedResponse === normalizedValue;
+        console.warn(`⚠️ Unknown conditionType: ${conditionType}, defaulting to equals`);
+        conditionMet = normalizedResponse.includes(normalizedValue);
     }
 
-    console.log(`📊 Condition result: ${conditionMet} (response: "${normalizedResponse}" ${operator} "${normalizedValue}")`);
+    console.log(`📊 Condition result: ${conditionMet} (response: "${normalizedResponse}" ${conditionType} "${normalizedValue}")`);
 
     // Salvar resultado da condição nas variáveis da sessão
     await interactiveCampaignSessionService.updateSession(session.id, {
@@ -203,6 +203,7 @@ export const interactiveCampaignFlowEngine = {
     // Procurar edge com label correspondente
     const targetEdge = edges.find((e: any) => {
       const label = e.label?.toLowerCase();
+      console.log('targetEdge label', label);
       return conditionMet
         ? (label === 'true' || label === 'sim' || label === 'yes' || label === 'verdadeiro')
         : (label === 'false' || label === 'não' || label === 'no' || label === 'falso');
