@@ -204,9 +204,11 @@ export const interactiveCampaignFlowEngine = {
     const targetEdge = edges.find((e: any) => {
       const label = e.label?.toLowerCase();
       console.log('targetEdge edges', e);
-      return conditionMet
-        ? (label === 'true' || label === 'sim' || label === 'yes' || label === 'verdadeiro')
-        : (label === 'false' || label === 'não' || label === 'no' || label === 'falso');
+      console.log('conditionMet', conditionMet === e.sourceHandle);
+      //  return conditionMet
+      //  ? (label === 'true' || label === 'sim' || label === 'yes' || label === 'verdadeiro')
+      //  : (label === 'false' || label === 'não' || label === 'no' || label === 'falso');
+      return conditionMet === e.sourceHandle;
     });
 
     if (targetEdge) {
