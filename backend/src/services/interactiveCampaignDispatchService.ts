@@ -292,12 +292,13 @@ export const interactiveCampaignDispatchService = {
           // Preparar payload da mensagem
           let messagePayload: any;
 
-          if (mediaUrl) {
+          if (mediaUrl && mediaType) {
             // Mensagem com mídia
             messagePayload = {
-              media: {
+              [mediaType]: {
                 url: mediaUrl,
                 caption: personalizedMessage || undefined,
+                fileName: mediaType === 'document' ? fileName || 'document.pdf' : undefined,
               },
             };
           } else {
