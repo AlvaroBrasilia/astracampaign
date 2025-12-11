@@ -297,9 +297,9 @@ export const interactiveCampaignDispatchService = {
             messagePayload = {
               [mediaType]: {
                 url: mediaUrl,
-                caption: personalizedMessage || undefined,
-                fileName: mediaType === 'document' ? fileName || 'document.pdf' : undefined,
               },
+              caption: personalizedMessage || undefined,
+              fileName: mediaType === 'document' ? fileName || 'document.pdf' : undefined,
             };
           } else {
             // Mensagem de texto
