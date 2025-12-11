@@ -203,7 +203,7 @@ export const interactiveCampaignFlowEngine = {
     // Procurar edge com label correspondente
     const targetEdge = edges.find((e: any) => {
       const label = e.label?.toLowerCase();
-      console.log('targetEdge label', label);
+      console.log('targetEdge edges', e);
       return conditionMet
         ? (label === 'true' || label === 'sim' || label === 'yes' || label === 'verdadeiro')
         : (label === 'false' || label === 'não' || label === 'no' || label === 'falso');
