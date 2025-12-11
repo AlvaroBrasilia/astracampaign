@@ -202,13 +202,15 @@ export const interactiveCampaignFlowEngine = {
 
     // Procurar edge com label correspondente
     const targetEdge = edges.find((e: any) => {
-      const label = e.label?.toLowerCase();
+      //const label = e.label?.toLowerCase();
+      const label = e.sourceHandle?.toLowerCase();
       console.log('targetEdge edges', e);
-      console.log('conditionMet', conditionMet === e.sourceHandle);
-      //  return conditionMet
-      //  ? (label === 'true' || label === 'sim' || label === 'yes' || label === 'verdadeiro')
-      //  : (label === 'false' || label === 'não' || label === 'no' || label === 'falso');
-      return conditionMet === e.sourceHandle;
+      console.log('conditionMet', conditionMet);
+      console.log('label', label);
+      return conditionMet
+        ? (label === 'true' || label === 'sim' || label === 'yes' || label === 'verdadeiro')
+        : (label === 'false' || label === 'não' || label === 'no' || label === 'falso');
+      // return conditionMet === e.sourceHandle;
     });
 
     if (targetEdge) {
